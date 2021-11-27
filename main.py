@@ -1,5 +1,6 @@
 from telegram.ext import Updater, MessageHandler, ConversationHandler, CommandHandler, CallbackContext, Filters
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, MessageEntity
+from datetime import datetime
 import django
 import os
 import sys
@@ -161,7 +162,7 @@ def appeal_handler(update: Update, context: CallbackContext):
         address=cd['address'][0:255],
         phone_number=cd['phone_number'][0:63],
         appeal=cd['appeal'],
-        user_id=update.effective_user.id,
+        user_id=update.effective_user.id
     )
     print(appeal)
 
@@ -178,7 +179,15 @@ def appeal_resend_handler(update: Update, context: CallbackContext):
 def all_appeal_handler(update: Update, context: CallbackContext):
     update.message.reply_text('Mening oxirgi 5 ta murojaatim')
     appeals = Appeal.objects.order_by('-id').filter(user_id=update.effective_user.id)[:5]
-    
+    print(appeals)
+    if len(appeals) == 0:
+        update.message.reply_text('Siz hech qanday murojaat qoldirmagansiz!')
+    else:
+        for appeal in appeals:
+            update.message.reply_text(f'{appeal.appeal}'\
+                f'\n\n'\
+                f'_{appeal.first_name}_ _{appeal.last_name}_'\
+                , parse_mode='Markdown')
 
 
 def stop_handler(update: Update, context: CallbackContext):
