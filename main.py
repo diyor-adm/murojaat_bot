@@ -1,10 +1,15 @@
+from telegram.constants import CHAT_GROUP
 from telegram.ext import Updater, MessageHandler, ConversationHandler, CommandHandler, CallbackContext, Filters
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, MessageEntity
 from datetime import datetime
 import django
 import os
 import sys
+import logging
 
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.DEBUG)
 
 sys.dont_write_bytecode = True
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
